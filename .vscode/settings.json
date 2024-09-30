@@ -1,0 +1,4 @@
+{
+  "dotnet.defaultSolution": "MP2Editor.sln",
+  "dotnet.preferCSharpExtension": true
+}
