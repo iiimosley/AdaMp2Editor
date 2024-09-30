@@ -4,4 +4,7 @@
     <RootNamespace>Mp2Editor.Core</RootNamespace>
     <AssemblyName>Mp2Editor.Core</AssemblyName>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Melanchall.DryWetMidi" Version="7.2.0" />
+  </ItemGroup>
 </Project>
