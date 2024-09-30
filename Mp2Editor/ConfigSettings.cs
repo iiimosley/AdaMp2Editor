@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
+using System.Text.Json
 
 namespace Mp2Editor
 {
@@ -33,7 +33,7 @@ namespace Mp2Editor
                 return new ConfigSettings();
 
             var json = File.ReadAllText(file);
-            var obj = JsonConvert.DeserializeObject<ConfigSettings>(json);
+            var obj = JsonSerializer.Deserialize<ConfigSettings>(json);
             return obj;
         }
     }
