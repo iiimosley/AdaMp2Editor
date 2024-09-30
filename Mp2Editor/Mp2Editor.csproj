@@ -27,35 +27,29 @@
 		<ApplicationTitle>MP2Editor</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.mp2editor</ApplicationId>
+		<ApplicationId>com.ada.mp2editor</ApplicationId>
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
 		<ApplicationVersion>1</ApplicationVersion>
 
-		<SupportedOSPlatformVersion
-			Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">11.0</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion
-			Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">
-			13.1</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion
-			Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion
-			Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">
-			10.0.17763.0</SupportedOSPlatformVersion>
-		<TargetPlatformMinVersion
-			Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">
-			10.0.17763.0</TargetPlatformMinVersion>
-		<SupportedOSPlatformVersion
-			Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+		<!-- Outputs -->
+		<BaseOutputPath>bin\</BaseOutputPath>
+		<OutputPath>$(BaseOutputPath)$(Configuration)\</OutputPath>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">11.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">13.1</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 	</PropertyGroup>
-
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\Images\Ada-Logo.ico" />
+		<!-- <MauiIcon Include="$(MSBuildThisFileDirectory)\Resources\Images\app.ico"
+			ForegroundFile="Resources\Images\app.ico" /> -->
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+		<!-- <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" /> -->
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
@@ -69,6 +63,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.82" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<Page Include="Styles.xaml">
 			<SubType>Designer</SubType>
 			<Generator>MSBuild:Compile</Generator>
@@ -76,28 +74,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Resource Include="Ada-Logo.ico" />
 		<Content Include="DEFAULT_PROGRAM.syx">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
-		<None Include="packages.config" />
-		<None Include="Properties\Settings.settings">
-			<Generator>SettingsSingleFileGenerator</Generator>
-			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
-		</None>
-		<AppDesigner Include="Properties\" />
 	</ItemGroup>
-
 	<ItemGroup>
-		<None Include="App.config" />
+		<ProjectReference Include="..\Mp2Editor.Core\Mp2Editor.Core.csproj" />
 	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\Mp2Editor.Core\Mp2Editor.Core.csproj">
-			<Project>{8a3597d3-d884-4b56-9cbd-4bb5859a2943}</Project>
-			<Name>Mp2Editor.Core</Name>
-		</ProjectReference>
-	</ItemGroup>
-
-	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
