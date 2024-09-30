@@ -21,13 +21,13 @@ namespace Mp2Editor
         private readonly string defaultProgramFile = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "DEFAULT_PROGRAM.syx");
         private readonly ConfigSettings config;
 
-        private MidiConnection midiConnection;
+        // private MidiConnection midiConnection;
 	    private byte[] currentProgram;
         private byte[] newProgram;
 	    private string programName;
-	    private KeyValuePair<int, string>? selectedMidiInput;
-	    private KeyValuePair<int, string>? selectedMidiOutput;
-	    private bool suppressMidiUpdate;
+	    // private KeyValuePair<int, string>? selectedMidiInput;
+	    // private KeyValuePair<int, string>? selectedMidiOutput;
+	    // private bool suppressMidiUpdate;
 	    private bool suppressRefresh;
         private volatile byte[] programToSend;
 	    private Dictionary<string, string> programFiles;
@@ -50,47 +50,47 @@ namespace Mp2Editor
 	        config = ConfigSettings.LoadFromFile();
 	        LoadPrograms();
 	        LoadConfig();
-	        RefreshMidi();
+	        // RefreshMidi();
 
 	        Task.Run(() => UpdateDeviceLoop());
 		}
         
-	    public IReadOnlyDictionary<int, string> MidiInputs => MidiConnection.InputDevices;
-        public IReadOnlyDictionary<int, string> MidiOutputs => MidiConnection.OutputDevices;
+	    // public IReadOnlyDictionary<int, string> MidiInputs => MidiConnection.InputDevices;
+        // public IReadOnlyDictionary<int, string> MidiOutputs => MidiConnection.OutputDevices;
 
-	    public KeyValuePair<int, string>? SelectedMidiInput
-	    {
-	        get { return selectedMidiInput; }
-	        set
-            {
-                selectedMidiInput = value;
-	            NotifyPropertyChanged();
+	    // public KeyValuePair<int, string>? SelectedMidiInput
+	    // {
+	    //     get { return selectedMidiInput; }
+	    //     set
+        //     {
+        //         selectedMidiInput = value;
+	    //         NotifyPropertyChanged();
 
-                if (suppressMidiUpdate)
-                    return; 
+        //         if (suppressMidiUpdate)
+        //             return; 
 
-                RefreshMidi();
-                config.MidiInput = selectedMidiInput;
-                config.SaveToFile();
-            }
-	    }
+        //         RefreshMidi();
+        //         config.MidiInput = selectedMidiInput;
+        //         config.SaveToFile();
+        //     }
+	    // }
 
-	    public KeyValuePair<int, string>? SelectedMidiOutput
-	    {
-	        get { return selectedMidiOutput; }
-	        set
-            {
-                selectedMidiOutput = value;
-	            NotifyPropertyChanged();
+	    // public KeyValuePair<int, string>? SelectedMidiOutput
+	    // {
+	    //     get { return selectedMidiOutput; }
+	    //     set
+        //     {
+        //         selectedMidiOutput = value;
+	    //         NotifyPropertyChanged();
 
-                if (suppressMidiUpdate)
-                    return;
+        //         if (suppressMidiUpdate)
+        //             return;
 
-                RefreshMidi();
-                config.MidiOutput = selectedMidiOutput;
-                config.SaveToFile();
-            }
-	    }
+        //         RefreshMidi();
+        //         config.MidiOutput = selectedMidiOutput;
+        //         config.SaveToFile();
+        //     }
+	    // }
 
 	    public Dictionary<string, string> ProgramFiles
 	    {
@@ -132,26 +132,26 @@ namespace Mp2Editor
 
 	    public string ProgramNumberDisplay => (currentProgramNumber + 1).ToString("d3");
 
-	    public int[] MidiChannels => Enumerable.Range(1, 16).ToArray();
+	    // public int[] MidiChannels => Enumerable.Range(1, 16).ToArray();
 
-	    public int MidiChannel
-	    {
-	        get { return midiChannel; }
-	        set
-	        {
-	            if (value == 0) // here I'm using channel 1-16. IF set to zero, then default to the lowest channel, in this case, 1
-	                value = 1;
+	    // public int MidiChannel
+	    // {
+	    //     get { return midiChannel; }
+	    //     set
+	    //     {
+	    //         if (value == 0) // here I'm using channel 1-16. IF set to zero, then default to the lowest channel, in this case, 1
+	    //             value = 1;
 
-                midiChannel = value;
-                if (midiConnection != null)
-                    midiConnection.Channel = value;
+        //         midiChannel = value;
+        //         if (midiConnection != null)
+        //             midiConnection.Channel = value;
 
-	            NotifyPropertyChanged();
-	            config.MidiChannel = midiChannel;
-	            config.SaveToFile();
-	            Refresh();
-	        }
-	    }
+	    //         NotifyPropertyChanged();
+	    //         config.MidiChannel = midiChannel;
+	    //         config.SaveToFile();
+	    //         Refresh();
+	    //     }
+	    // }
 
 	    public ICommand RequestProgramCommand { get; set; }
         public ICommand SendToDeviceCommand { get; set; }
@@ -236,7 +236,7 @@ namespace Mp2Editor
         {
             try
             {
-                suppressMidiUpdate = true;
+                // suppressMidiUpdate = true;
                 AutoUpdate = config.AutoUpdate;
                 MidiChannel = config.MidiChannel;
                 LoadOnProgramSelect = config.LoadOnProgramSelect;
@@ -273,28 +273,28 @@ namespace Mp2Editor
             }
             finally
             { 
-                suppressMidiUpdate = false;
+                // suppressMidiUpdate = false;
             }
         }
 
-        private void RefreshMidi()
-        {
-            if (!selectedMidiInput.HasValue)
-                return;
-            if (!selectedMidiOutput.HasValue)
-                return;
+        // private void RefreshMidi()
+        // {
+        //     if (!selectedMidiInput.HasValue)
+        //         return;
+        //     if (!selectedMidiOutput.HasValue)
+        //         return;
 
-            if (midiConnection != null)
-            {
-                midiConnection.SysexCallback -= ReceiveProgramHandler;
-                midiConnection.Dispose();
-                midiConnection = null;
-            }
+        //     if (midiConnection != null)
+        //     {
+        //         midiConnection.SysexCallback -= ReceiveProgramHandler;
+        //         midiConnection.Dispose();
+        //         midiConnection = null;
+        //     }
             
-            midiConnection = new MidiConnection(selectedMidiInput.Value.Key, selectedMidiOutput.Value.Key);
-            midiConnection.SysexCallback += ReceiveProgramHandler;
-            midiConnection.Channel = midiChannel;
-        }
+        //     midiConnection = new MidiConnection(selectedMidiInput.Value.Key, selectedMidiOutput.Value.Key);
+        //     midiConnection.SysexCallback += ReceiveProgramHandler;
+        //     midiConnection.Channel = midiChannel;
+        // }
         
         private void ReceiveProgramHandler(byte[] data)
         {
@@ -344,34 +344,34 @@ namespace Mp2Editor
 
         private Task UpdateDeviceLoop()
         {
-            while (true)
-            {
-                byte[] prg = null;
-                Thread.Sleep(150);
+            // while (true)
+            // {
+            //     byte[] prg = null;
+            //     Thread.Sleep(150);
 
-                lock (sendLock)
-                {
-                    if (programToSend != null && AutoUpdate)
-                    {
-                        prg = programToSend;
-                        programToSend = null;
-                    }
-                }
+            //     lock (sendLock)
+            //     {
+            //         if (programToSend != null && AutoUpdate)
+            //         {
+            //             prg = programToSend;
+            //             programToSend = null;
+            //         }
+            //     }
 
-                if (prg != null)
-                    midiConnection.SendSysex(prg);
-            }
+            //     if (prg != null)
+            //         midiConnection.SendSysex(prg);
+            // }
         }
 
         private void RequestProgram(object obj)
         {
-            midiConnection.SendSysex(Mp2Sysex.RequestDumpSysex(midiChannel));
+            // midiConnection.SendSysex(Mp2Sysex.RequestDumpSysex(midiChannel));
         }
 
         private void SendToDevice(object obj)
         {
-            if (newProgram != null)
-                midiConnection.SendSysex(newProgram);
+            // if (newProgram != null)
+            //     midiConnection.SendSysex(newProgram);
         }
 
         private void LoadPrograms()
@@ -424,7 +424,7 @@ namespace Mp2Editor
             var newNumber = (currentProgramNumber + inc + 128) % 128;
             CurrentProgramNumber = newNumber;
 
-            midiConnection.SendProgramSelect(CurrentProgramNumber);
+            // midiConnection.SendProgramSelect(CurrentProgramNumber);
 
             if (!LoadOnProgramSelect)
                 return;
